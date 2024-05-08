@@ -22,9 +22,9 @@ impl AsRef<str> for SubscriberEmail {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use claims;
     use fake::faker::internet::en::SafeEmail;
     use fake::Fake;
-    use claims;
 
     #[test]
     fn empty_string_is_rejected() {
@@ -43,8 +43,6 @@ mod tests {
         let email = "@domain.com".to_string();
         claims::assert_err!(SubscriberEmail::parse(email));
     }
-
-
 
     #[derive(Debug, Clone)]
     struct ValidEmailFixture(String);
