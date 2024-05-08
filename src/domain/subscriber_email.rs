@@ -22,6 +22,8 @@ impl AsRef<str> for SubscriberEmail {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use fake::faker::internet::en::SafeEmail;
+    use fake::Fake;
     use claims;
 
     #[test]
@@ -40,5 +42,21 @@ mod tests {
     fn email_missing_subject_is_rejected() {
         let email = "@domain.com".to_string();
         claims::assert_err!(SubscriberEmail::parse(email));
+    }
+
+
+
+    #[derive(Debug, Clone)]
+    struct ValidEmailFixture(String);
+
+    impl quickcheck::Arbitrary for ValidEmailFixture {
+        fn arbitrary<G: quickcheck::Gen>(g: &mut G) -> Self {
+            ValidEmailFixture(SafeEmail().fake_with_rng(g))
+        }
+    }
+
+    #[quickcheck_macros::quickcheck]
+    fn valid_emails_are_parsed_succesfully(valid_emails: ValidEmailFixture) -> bool {
+        SubscriberEmail::parse(valid_emails.0).is_ok()
     }
 }
