@@ -1,6 +1,5 @@
-use secrecy::{ExposeSecret, Secret};
-
 use crate::domain::SubscriberEmail;
+use secrecy::{ExposeSecret, Secret};
 
 #[derive(Clone, serde::Deserialize)]
 pub struct Settings {
@@ -11,8 +10,9 @@ pub struct Settings {
 
 #[derive(Clone, serde::Deserialize)]
 pub struct ApplicationSettings {
-    pub host: String,
     pub port: u16,
+    pub host: String,
+    pub base_url: String,
 }
 
 #[derive(Clone, serde::Deserialize)]
